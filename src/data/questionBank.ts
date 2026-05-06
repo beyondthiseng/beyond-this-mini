@@ -1,25 +1,14 @@
 // src/data/questionBank.ts
+// 이 파일은 레거시 호환용입니다. 실제 테스트는 src/data/questions/ 를 사용합니다.
 import type { LevelKey } from '../types/questions';
 
 export interface Question {
   q: string;
   o: string[];
-  a: number; // 0-based index
+  a: number;
 }
 
 export const QUESTION_BANK: Record<LevelKey, Question[]> = {
-  phonics: [
-    { q: "Which word starts with the /b/ sound?", o: ["Apple","Ball","Cat","Dog"], a: 1 },
-    { q: "What sound is at the end of 'cat'?", o: ["/b/","/t/","/k/","/p/"], a: 1 },
-    { q: "'C-A-T' — blend the sounds. What word is this?", o: ["cup","can","cat","cap"], a: 2 },
-    { q: "Which word has the short 'e' sound?", o: ["cake","bed","bike","boat"], a: 1 },
-    { q: "What does 'sh' say?", o: ["/s/","/h/","/sh/","/ch/"], a: 2 },
-    { q: "Which word rhymes with 'hat'?", o: ["hot","bat","hit","hut"], a: 1 },
-    { q: "'D-O-G' — what word is this?", o: ["dig","dog","dug","dot"], a: 1 },
-    { q: "Which letter makes the /k/ sound in 'cat'?", o: ["a","t","c","e"], a: 2 },
-    { q: "Which word starts with a vowel sound?", o: ["ball","tree","apple","dog"], a: 2 },
-    { q: "How many syllables in 'butterfly'?", o: ["1","2","3","4"], a: 2 },
-  ],
   basic: [
     { q: "She ___ to school every day.", o: ["go","goes","going","gone"], a: 1 },
     { q: "What does 'big' mean?", o: ["small","large","fast","slow"], a: 1 },
@@ -32,45 +21,45 @@ export const QUESTION_BANK: Record<LevelKey, Question[]> = {
     { q: "Which word is a verb?", o: ["happy","quickly","run","blue"], a: 2 },
     { q: "She ___ TV when I called.", o: ["watch","watches","was watching","watched"], a: 2 },
   ],
-  growth: [
-    { q: "'Tom was tired because he worked all night.' Why was Tom tired?", o: ["He slept too much.","He worked all night.","He was sick.","He ran a race."], a: 1 },
-    { q: "'The scientist made an important discovery.' 'Discovery' means ___.", o: ["mistake","plan","finding","question"], a: 2 },
-    { q: "'She was reluctant to speak.' 'Reluctant' means ___.", o: ["happy","eager","unwilling","ready"], a: 2 },
-    { q: "'Despite the rain, the game continued.' 'Despite' means ___.", o: ["because of","even though","before","after"], a: 1 },
-    { q: "'The author implies...' 'Implies' means ___.", o: ["states directly","suggests indirectly","argues strongly","proves clearly"], a: 1 },
-    { q: "Which is a compound sentence?", o: ["She runs fast.","She runs, and he walks.","Running is good.","She ran fast."], a: 1 },
-    { q: "'Annually' means ___.", o: ["every day","every week","every month","every year"], a: 3 },
-    { q: "'He felt the weight of responsibility.' This is ___.", o: ["simile","metaphor","alliteration","onomatopoeia"], a: 1 },
-    { q: "The passage is mostly about ___.", o: ["how to cook","protecting the environment","learning English","a sports event"], a: 1 },
-    { q: "'Eager' is closest in meaning to ___.", o: ["tired","nervous","enthusiastic","confused"], a: 2 },
+  lower_intermediate: [
+    { q: "'Discover' means to ___.", o: ["lose something","find something new","break something","forget something"], a: 1 },
+    { q: "Which word means 'very surprised'?", o: ["bored","astonished","tired","confused"], a: 1 },
+    { q: "'Ancient' means ___.", o: ["very new","very old","very big","very small"], a: 1 },
+    { q: "The opposite of 'frequently' is ___.", o: ["always","never","rarely","usually"], a: 2 },
+    { q: "'Enormous' is closest in meaning to ___.", o: ["tiny","fast","huge","loud"], a: 2 },
+    { q: "If something is 'fragile', you should handle it ___.", o: ["quickly","roughly","carefully","loudly"], a: 2 },
+    { q: "'Migrate' means to ___.", o: ["stay in one place","move from one place to another","build a new home","look for food"], a: 1 },
+    { q: "A 'habitat' is ___.", o: ["what an animal eats","where an animal lives","how an animal moves","why animals sleep"], a: 1 },
+    { q: "She ___ TV when I called her.", o: ["watch","watches","was watching","watched"], a: 2 },
+    { q: "Despite the rain, the game ___.", o: ["continue","continues","continued","continuing"], a: 2 },
+  ],
+  intermediate: [
+    { q: "'Convince' means to ___.", o: ["force someone","make someone believe something","ask a question","stop someone"], a: 1 },
+    { q: "The word 'abundant' means ___.", o: ["rare and hard to find","available in large amounts","old and worn out","small and unimportant"], a: 1 },
+    { q: "'Reluctant' means ___.", o: ["eager and ready","unwilling or hesitant","confused and lost","confident and sure"], a: 1 },
+    { q: "A 'controversial' topic is one that ___.", o: ["everyone agrees on","people strongly disagree about","is easy to understand","has been solved"], a: 1 },
+    { q: "'Imply' is closest in meaning to ___.", o: ["state directly","suggest indirectly","argue strongly","prove clearly"], a: 1 },
+    { q: "Something 'inevitable' is ___.", o: ["possible but unlikely","certain to happen","easy to avoid","hard to understand"], a: 1 },
+    { q: "'Objective' information is ___.", o: ["based on personal feelings","based on facts, not opinions","difficult to understand","old and outdated"], a: 1 },
+    { q: "To 'exaggerate' means to ___.", o: ["tell the truth clearly","make something seem bigger than it is","explain something simply","repeat something many times"], a: 1 },
+    { q: "The report ___ by the team before the deadline.", o: ["was completed","completed","has completed","is completing"], a: 0 },
+    { q: "Which sentence uses the correct relative clause?", o: ["The book which I borrowed it was interesting.","The book that I borrowed was interesting.","The book whom I borrowed was interesting.","The book I borrowed it was interesting."], a: 1 },
   ],
   advanced: [
-    { q: "'The data was inconclusive.' This means ___.", o: ["data was very clear","data had no definitive answer","data was incorrect","data was very helpful"], a: 1 },
-    { q: "'Ambiguous' most nearly means ___.", o: ["clear","uncertain","difficult","important"], a: 1 },
-    { q: "An 'inference' is ___.", o: ["a direct quote","a conclusion from evidence","the main idea","a rhetorical question"], a: 1 },
-    { q: "'The economy is cyclical.' 'Cyclical' means ___.", o: ["random","linear","repeating in patterns","always growing"], a: 2 },
-    { q: "'Pragmatic' means ___.", o: ["idealistic","practical","emotional","theoretical"], a: 1 },
-    { q: "'Life is a journey' is an example of ___.", o: ["simile","metaphor","alliteration","hyperbole"], a: 1 },
-    { q: "'Sardonic' means ___.", o: ["enthusiastic","mockingly critical","neutral","compassionate"], a: 1 },
-    { q: "'The policy had unintended consequences.' This suggests ___.", o: ["policy worked perfectly","policy had unplanned results","policy caused no problems","policy was effective"], a: 1 },
-    { q: "'Ubiquitous' means ___.", o: ["rare","hidden","present everywhere","expensive"], a: 2 },
-    { q: "Which best describes 'irony'?", o: ["saying exactly what you mean","saying the opposite of what you mean","asking a question","giving a command"], a: 1 },
-  ],
-  adult: [
-    { q: "The meeting has been ___ to next Monday.", o: ["put off","called off","postponed","both A and C"], a: 3 },
-    { q: "'Concise' writing is ___.", o: ["long and detailed","brief and clear","emotional","technical"], a: 1 },
-    { q: "'The proposal was met with skepticism.' 'Skepticism' means ___.", o: ["enthusiasm","doubt","approval","confusion"], a: 1 },
-    { q: "Which is the most formal?", o: ["I wanna go.","I want to go.","I'd like to go, please.","Wanna come?"], a: 2 },
-    { q: "'Leverage' in business means ___.", o: ["to lose","to use something to gain advantage","to ignore","to slow down"], a: 1 },
-    { q: "A 'deadline' is ___.", o: ["a long meeting","the last time to finish something","the start of a project","a type of contract"], a: 1 },
-    { q: "'Collaborate' means ___.", o: ["to compete","to work together","to disagree","to manage alone"], a: 1 },
-    { q: "'He's on the fence about the decision.' This means ___.", o: ["he agrees","he disagrees","he is undecided","he is angry"], a: 2 },
-    { q: "Which phrase shows contrast?", o: ["In addition,","Therefore,","However,","As a result,"], a: 2 },
-    { q: "'Transparent' communication means ___.", o: ["hidden","open and honest","technical","brief"], a: 1 },
+    { q: "'Ambiguous' most nearly means ___.", o: ["perfectly clear","open to multiple interpretations","extremely difficult","completely wrong"], a: 1 },
+    { q: "Something 'paradoxical' seems ___.", o: ["straightforward and simple","contradictory yet possibly true","completely false","easily explained"], a: 1 },
+    { q: "'Ubiquitous' means ___.", o: ["rare and unusual","present everywhere","extremely expensive","recently created"], a: 1 },
+    { q: "A 'pragmatic' approach focuses on ___.", o: ["ideal outcomes","practical solutions","emotional responses","traditional methods"], a: 1 },
+    { q: "'Rhetoric' refers to ___.", o: ["scientific research methods","the art of persuasive speaking or writing","a type of logical argument","historical events"], a: 1 },
+    { q: "An 'empirical' claim is based on ___.", o: ["logical reasoning alone","observation and evidence","expert opinion","theoretical assumptions"], a: 1 },
+    { q: "'Mitigate' means to ___.", o: ["worsen a situation","make something less severe","completely solve a problem","ignore a difficulty"], a: 1 },
+    { q: "A 'fallacy' in an argument is ___.", o: ["a strong piece of evidence","an error in reasoning","a counter-argument","a proven fact"], a: 1 },
+    { q: "Had she arrived earlier, she ___ the presentation.", o: ["would see","would have seen","will see","sees"], a: 1 },
+    { q: "Which transition word best shows a logical CONTRAST?", o: ["Furthermore","Therefore","Nevertheless","Consequently"], a: 2 },
   ],
 };
 
 export function pickQuestions(level: LevelKey, count = 5): Question[] {
-  const pool = QUESTION_BANK[level] || QUESTION_BANK.basic;
+  const pool = QUESTION_BANK[level] ?? QUESTION_BANK.basic;
   return [...pool].sort(() => Math.random() - 0.5).slice(0, Math.min(count, pool.length));
 }
