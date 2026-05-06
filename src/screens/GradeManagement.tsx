@@ -2,9 +2,10 @@
 import React, { useState, useMemo } from 'react';
 import { Btn, Card, Field, Page, ScoreDots } from '../components/ui';
 import RadarChart, { radarSVGString } from '../components/ui/RadarChart';
-import type { GradeRecord, Student, LevelKey } from '../types';
+import type { GradeRecord, Student } from '../types';
 import { gid, tod, toQ, saveGrades } from '../data/storage';
-import { LEVEL_LABELS, LEVEL_TEMPLATES, LEVEL_ORDER } from '../data/levelTemplates';
+import { LEVEL_LABELS as QLABELS } from '../types/questions';
+import { LEVEL_TEMPLATES, LEVEL_ORDER } from '../data/levelTemplates';
 
 interface Props {
   students: Student[];
@@ -27,7 +28,7 @@ function getGrade(total: number): string {
 }
 
 function openPrintWindow(st: Student, g: GradeRecord) {
-  const areas = LEVEL_TEMPLATES[g.level] ?? LEVEL_TEMPLATES.basic;
+  const areas = LEVEL_TEMPLATES[g.level as keyof typeof LEVEL_TEMPLATES] ?? LEVEL_TEMPLATES.basic ?? LEVEL_TEMPLATES.basic;
   const total = calcTotal(g);
   const grade = getGrade(total);
   const svgStr = radarSVGString(areas, g.radarScores, g.radarBenchmark, 230);
@@ -63,7 +64,7 @@ th{background:#F8FAFC;font-weight:700;text-align:left}
 <div class="info-grid">
   <div><span>이름 </span><b>${st.name}</b></div>
   <div><span>학년 </span><b>${st.grade}</b></div>
-  <div><span>레벨 </span><b>${LEVEL_LABELS[g.level]}반</b></div>
+  <div><span>레벨 </span><b>${QLABELS[g.level as keyof typeof QLABELS] ?? g.level}반</b></div>
   <div><span>교재 </span><b>${st.currentBook || '-'}</b></div>
   <div><span>학교 </span><b>${st.school || '-'}</b></div>
   <div><span>평가 기간 </span><b>${g.quarter}</b></div>
@@ -127,8 +128,8 @@ th{background:#F8FAFC;font-weight:700;text-align:left}
   else alert('팝업을 허용해 주세요.');
 }
 
-function initRecord(studentId: string, level: LevelKey): GradeRecord {
-  const areas = LEVEL_TEMPLATES[level] ?? LEVEL_TEMPLATES.basic;
+function initRecord(studentId: string, level: string): GradeRecord {
+  const areas = LEVEL_TEMPLATES[level as keyof typeof LEVEL_TEMPLATES] ?? LEVEL_TEMPLATES.basic ?? LEVEL_TEMPLATES.basic;
   const scores: Record<string, number> = {};
   const bench:  Record<string, number> = {};
   const cmts:   Record<string, string> = {};
@@ -183,7 +184,7 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
 
   // ── 성적 입력 폼 ─────────────────────────────────────────────
   if (form && editId) {
-    const areas = LEVEL_TEMPLATES[form.level] ?? LEVEL_TEMPLATES.basic;
+    const areas = LEVEL_TEMPLATES[form.level as keyof typeof LEVEL_TEMPLATES] ?? LEVEL_TEMPLATES.basic ?? LEVEL_TEMPLATES.basic;
     const total = calcTotal(form);
     return (
       <Page title={`${selStudent?.name} — 성적 입력`}>
@@ -200,7 +201,7 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
                 </Field>
                 <Field label="레벨">
                   <select value={form.level} onChange={e => {
-                    const lv = e.target.value as LevelKey;
+                    const lv = e.target.value as string;
                     const newAreas = LEVEL_TEMPLATES[lv];
                     const ns: Record<string,number> = {}; const nb: Record<string,number> = {}; const nc: Record<string,string> = {};
                     newAreas.forEach(a => { ns[a] = form.radarScores[a] ?? 0; nb[a] = form.radarBenchmark[a] ?? 3; nc[a] = form.areaComments[a] ?? ''; });
@@ -309,7 +310,7 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
               }}>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>{s.name}</div>
-                  <div style={{ fontSize: 11, color: '#94A3B8' }}>{s.grade} · {LEVEL_LABELS[(s.level as LevelKey) || 'basic']}</div>
+                  <div style={{ fontSize: 11, color: '#94A3B8' }}>{s.grade} · {LEVEL_LABELS[(s.level as string) || 'basic']}</div>
                 </div>
                 <span style={{ fontSize: 10, color: '#94A3B8' }}>{cnt}회</span>
               </div>
@@ -333,14 +334,14 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
               {selGrades.length === 0 ? (
                 <Card style={{ textAlign: 'center', color: '#94A3B8', padding: 24 }}>성적 기록이 없습니다.</Card>
               ) : selGrades.map(g => {
-                const areas = LEVEL_TEMPLATES[g.level] ?? LEVEL_TEMPLATES.basic;
+                const areas = LEVEL_TEMPLATES[g.level as keyof typeof LEVEL_TEMPLATES] ?? LEVEL_TEMPLATES.basic ?? LEVEL_TEMPLATES.basic;
                 const total = calcTotal(g);
                 return (
                   <Card key={g.id} style={{ marginBottom: 12 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                       <div>
                         <span style={{ fontSize: 14, fontWeight: 700 }}>{g.quarter}</span>
-                        <span style={{ fontSize: 12, color: '#94A3B8', marginLeft: 8 }}>{g.date} · {LEVEL_LABELS[g.level]}반</span>
+                        <span style={{ fontSize: 12, color: '#94A3B8', marginLeft: 8 }}>{g.date} · {QLABELS[g.level as keyof typeof QLABELS] ?? g.level}반</span>
                       </div>
                       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                         <span style={{ fontSize: 18, fontWeight: 800, color: total >= 80 ? '#15803D' : total >= 60 ? '#B45309' : '#B91C1C' }}>

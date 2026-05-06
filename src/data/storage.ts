@@ -1,5 +1,5 @@
 // src/data/storage.ts
-import type { Student, AdmissionTestResult, LessonLog, GradeRecord, Payment } from '../types';
+import type { Student, LessonLog, GradeRecord, Payment } from '../types';
 
 const KEYS = { s:'btm_students', t:'btm_tests', l:'btm_lessons', g:'btm_grades', p:'btm_payments' };
 
@@ -30,7 +30,7 @@ export function saveGrades(d: GradeRecord[]): void { save(KEYS.g, d); }
 export function loadPayments(): Payment[] { return load(KEYS.p, SAMPLE_PAYMENTS); }
 export function savePayments(d: Payment[]): void { save(KEYS.p, d); }
 
-export function exportAll(students: Student[], tests: AdmissionTestResult[], lessons: LessonLog[], grades: GradeRecord[], payments: Payment[]): void {
+export function exportAll(students: Student[], tests: unknown[], lessons: LessonLog[], grades: GradeRecord[], payments: Payment[]): void {
   const data = JSON.stringify({ version: 3, exportedAt: new Date().toISOString(), students, tests, lessons, grades, payments }, null, 2);
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);

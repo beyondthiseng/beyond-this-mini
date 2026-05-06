@@ -1,75 +1,48 @@
 // src/data/levelTemplates.ts
-import type { LevelKey } from '../types';
+// 이 파일은 성적관리의 Radar Chart 레벨 템플릿용입니다.
+// 입학테스트 레벨(questions.ts)과는 별개입니다.
 
-export const LEVEL_LABELS: Record<LevelKey, string> = {
-  phonics:  'Phonics',
-  basic:    'Basic',
-  growth:   'Growth',
-  advanced: 'Advanced',
-  adult:    '성인',
-};
-
-export const LEVEL_DESC: Record<LevelKey, string> = {
-  phonics:  '파닉스 기초 — 알파벳 음가, 블렌딩 시작',
-  basic:    '기본반 — 초등 1~3년 수준',
-  growth:   '성장반 — 초등 4~6년 수준',
-  advanced: '심화반 — 중등 이상',
-  adult:    '성인반',
-};
-
-export const LEVEL_ORDER: LevelKey[] = ['phonics', 'basic', 'growth', 'advanced'];
-
-export const LEVEL_TEMPLATES: Record<LevelKey, string[]> = {
+export const LEVEL_TEMPLATES: Record<string, string[]> = {
   phonics: [
-    'Letter Sounds',
-    'Blending',
-    'Decoding',
-    'Basic Vocabulary',
-    'Listening',
-    'Simple Speaking',
+    'Letter Sounds', 'Blending', 'Decoding',
+    'Basic Vocabulary', 'Listening', 'Simple Speaking',
   ],
   basic: [
-    'Vocabulary',
-    'Sentence Structure',
-    'Reading Accuracy',
-    'Listening',
-    'Speaking',
-    'Writing',
+    'Vocabulary', 'Sentence Structure', 'Reading Accuracy',
+    'Listening', 'Speaking', 'Writing',
+  ],
+  lower_intermediate: [
+    'Reading Comprehension', 'Vocabulary Usage', 'Sentence Expansion',
+    'Speaking', 'Writing', 'Thinking',
   ],
   growth: [
-    'Reading Comprehension',
-    'Vocabulary Usage',
-    'Sentence Expansion',
-    'Speaking',
-    'Writing',
-    'Thinking',
+    'Reading Comprehension', 'Vocabulary Usage', 'Sentence Expansion',
+    'Speaking', 'Writing', 'Thinking',
+  ],
+  intermediate: [
+    'Critical Reading', 'Inference', 'Vocabulary Depth',
+    'Speaking', 'Writing', 'Reasoning',
   ],
   advanced: [
-    'Critical Reading',
-    'Inference',
-    'Vocabulary Depth',
-    'Speaking',
-    'Writing',
-    'Reasoning',
+    'Critical Reading', 'Inference', 'Vocabulary Depth',
+    'Speaking', 'Writing', 'Reasoning',
   ],
   adult: [
-    'Reading Comprehension',
-    'Vocabulary',
-    'Grammar',
-    'Speaking',
-    'Writing',
-    'Communication',
+    'Reading Comprehension', 'Vocabulary', 'Grammar',
+    'Speaking', 'Writing', 'Communication',
   ],
 };
 
+export const LEVEL_ORDER = ['phonics','basic','lower_intermediate','growth','intermediate','advanced','adult'];
+
 export const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
-  '문의':      { bg: '#EEF2FF', color: '#4338CA' },
+  '문의':       { bg: '#EEF2FF', color: '#4338CA' },
   '테스트예정': { bg: '#FFF7ED', color: '#C2410C' },
   '테스트완료': { bg: '#FFFBEB', color: '#B45309' },
-  '미등록':    { bg: '#FEF2F2', color: '#B91C1C' },
-  '재원생':    { bg: '#F0FDF4', color: '#15803D' },
-  '휴원':      { bg: '#F0F9FF', color: '#0369A1' },
-  '퇴원':      { bg: '#F9FAFB', color: '#6B7280' },
+  '미등록':     { bg: '#FEF2F2', color: '#B91C1C' },
+  '재원생':     { bg: '#F0FDF4', color: '#15803D' },
+  '휴원':       { bg: '#F0F9FF', color: '#0369A1' },
+  '퇴원':       { bg: '#F9FAFB', color: '#6B7280' },
 };
 
 export const STUDENT_STATUS_LIST = [

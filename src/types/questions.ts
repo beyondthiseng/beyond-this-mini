@@ -4,44 +4,47 @@ export type LevelKey = 'basic' | 'lower_intermediate' | 'intermediate' | 'advanc
 
 export const LEVEL_LABELS: Record<LevelKey, string> = {
   basic: 'Basic',
-  lower_intermediate: 'Lower Intermediate (성장반)',
-  intermediate: 'Intermediate (실력반)',
-  advanced: 'Advanced (심화반)',
+  lower_intermediate: 'Lower Intermediate',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
 
 export const LEVEL_SHORT: Record<LevelKey, string> = {
   basic: 'Basic',
-  lower_intermediate: 'L. Intermediate',
+  lower_intermediate: 'L.Intermediate',
   intermediate: 'Intermediate',
   advanced: 'Advanced',
 };
 
 export const LEVEL_DESC: Record<LevelKey, string> = {
-  basic: '150L~300L · Fluency · Bricks 80~100 수준',
-  lower_intermediate: '350L~500L · Comprehension · Bricks 150 수준',
-  intermediate: '450L~650L · Structured Reading · Bricks 200~250 수준',
-  advanced: '600L~900L · Academic Reading · Bricks 300+ 수준',
+  basic: '150L~300L · Bricks 80~100 수준',
+  lower_intermediate: '350L~500L · Bricks 150 수준',
+  intermediate: '450L~650L · Bricks 200~250 수준',
+  advanced: '600L~900L · Bricks 300+ 수준',
 };
 
 export const LEVEL_ORDER: LevelKey[] = [
   'basic', 'lower_intermediate', 'intermediate', 'advanced'
 ];
 
-// ── 독립 문제 (Vocabulary / Grammar) ─────────────────────────────
 export interface StandaloneQuestion {
   id: string;
   type: 'standalone';
   area: 'vocabulary' | 'grammar';
   level: LevelKey;
-  difficulty: 1 | 2 | 3; // 1=쉬움, 2=보통, 3=어려움
+  difficulty: 1 | 2 | 3;
   q: string;
-  o: string[];   // 4개 보기
-  a: number;     // 0-based 정답 인덱스
+  o: string[];
+  a: number;
   explanation?: string;
 }
 
-// ── 지문 기반 문제 ────────────────────────────────────────────────
 export type PassageSize = 'short' | 'medium' | 'long';
+
+export type ReadingSkill =
+  | 'main_idea' | 'detail' | 'character' | 'setting' | 'sequence'
+  | 'inference' | 'cause_effect' | 'fact_opinion' | 'vocabulary_in_context'
+  | 'prediction' | 'author_purpose' | 'argument' | 'evidence';
 
 export interface PassageSubQuestion {
   id: string;
@@ -50,11 +53,6 @@ export interface PassageSubQuestion {
   a: number;
   skill: ReadingSkill;
 }
-
-export type ReadingSkill =
-  | 'main_idea' | 'detail' | 'character' | 'setting' | 'sequence'
-  | 'inference' | 'cause_effect' | 'fact_opinion' | 'vocabulary_in_context'
-  | 'prediction' | 'author_purpose' | 'argument' | 'evidence';
 
 export interface PassageQuestion {
   id: string;
@@ -67,32 +65,17 @@ export interface PassageQuestion {
   questions: PassageSubQuestion[];
 }
 
-// ── 전체 문항 세트 (한 레벨의 30문항) ────────────────────────────
 export interface QuestionSet {
   level: LevelKey;
-  vocabulary: StandaloneQuestion[];   // 8문항
-  grammar: StandaloneQuestion[];      // 7문항
+  vocabulary: StandaloneQuestion[];
+  grammar: StandaloneQuestion[];
   passages: {
-    short:  PassageQuestion;   // 3문항
-    medium: PassageQuestion;   // 5문항
-    long:   PassageQuestion;   // 7문항
+    short:  PassageQuestion;
+    medium: PassageQuestion;
+    long:   PassageQuestion;
   };
 }
 
-// ── 테스트 세션 ───────────────────────────────────────────────────
-export interface TestSession {
-  studentId: string;
-  startLevel: LevelKey;
-  phase: 1 | 2;
-  currentLevel: LevelKey;
-  answers: Record<string, number | null>; // questionId → chosen index
-  score: number;
-  total: number;
-  finalLevel: LevelKey | null;
-  adjustedUp: boolean;
-}
-
-// ── 저장되는 테스트 결과 ──────────────────────────────────────────
 export interface AdmissionResult {
   id: string;
   studentId: string;

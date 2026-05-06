@@ -2,6 +2,7 @@
 import React from 'react';
 import { exportAll } from '../../data/storage';
 import type { Student, LessonLog, GradeRecord, Payment } from '../../types';
+import type { AdmissionResult } from '../../types/questions';
 
 type PageId = string;
 
@@ -21,7 +22,7 @@ interface Props {
   setPage: (p: PageId) => void;
   badges?: Partial<Record<PageId, number>>;
   students: Student[];
-  tests: unknown[];
+  tests: AdmissionResult[];
   lessons: LessonLog[];
   grades: GradeRecord[];
   payments: Payment[];
