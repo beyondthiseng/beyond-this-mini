@@ -19,14 +19,18 @@ export interface Memo {
 export interface Student {
   id: string;
   name: string;
+  nameEn: string;
+  gender: '남' | '여' | '';
   grade: string;
   school: string;
   birthdate: string;
   studentPhone: string;
   parentPhone: string;
+  emergencyPhone: string;
+  address: string;
+  email: string;
   inquiryRoute: InquiryRoute;
   classInterest: ClassInterest[];
-  currentBook: string;
   level: LevelKey | '';
   notes: string;
   status: StudentStatus;

@@ -16,7 +16,7 @@ export default function StudentList({ students, setStudents, setPage, setSelId }
   const [search, setSearch] = useState('');
   const [sf, setSf] = useState('전체');
   const [showAdd, setShowAdd] = useState(false);
-  const [nf, setNf] = useState({ name:'', grade:'', parentPhone:'', status:'문의' as string, inquiryRoute:'블로그' as string, classInterest:'기본반' as string });
+  const [nf, setNf] = useState({ name:'', nameEn:'', gender:'' as '남'|'여'|'', grade:'', parentPhone:'', status:'문의' as string, inquiryRoute:'블로그' as string, classInterest:'기본반' as string });
 
   const filtered = useMemo(() => students.filter(s => {
     if (sf !== '전체' && s.status !== sf) return false;
@@ -27,11 +27,14 @@ export default function StudentList({ students, setStudents, setPage, setSelId }
   const addStudent = () => {
     if (!nf.name.trim()) return;
     const ns: Student = {
-      id: gid(), name: nf.name.trim(), grade: nf.grade, school: '', birthdate: '',
+      id: gid(), name: nf.name.trim(), nameEn: nf.nameEn.trim(),
+      gender: nf.gender as Student['gender'],
+      grade: nf.grade, school: '', birthdate: '',
       studentPhone: '', parentPhone: nf.parentPhone,
+      emergencyPhone: '', address: '', email: '',
       inquiryRoute: nf.inquiryRoute as Student['inquiryRoute'],
       classInterest: [nf.classInterest as Student['classInterest'][0]],
-      currentBook: '', level: '', notes: '',
+      level: '', notes: '',
       status: nf.status as Student['status'],
       enrollDate: nf.status === '재원생' ? tod() : '',
       leaveDate: '', lastContactDate: tod(), nextContactDate: '',
@@ -88,7 +91,15 @@ export default function StudentList({ students, setStudents, setPage, setSelId }
       {showAdd && (
         <Modal onClose={() => setShowAdd(false)} width={320}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>새 학생 추가</div>
-          <Field label="이름 *"><input value={nf.name} onChange={e => setNf({...nf,name:e.target.value})} placeholder="이름" /></Field>
+          <Field label="이름 (한국어) *"><input value={nf.name} onChange={e => setNf({...nf,name:e.target.value})} placeholder="홍길동" /></Field>
+          <Field label="이름 (영어)"><input value={nf.nameEn} onChange={e => setNf({...nf,nameEn:e.target.value})} placeholder="Hong Gildong" /></Field>
+          <Field label="성별">
+            <select value={nf.gender} onChange={e => setNf({...nf,gender:e.target.value as '남'|'여'|''})}>
+              <option value="">-</option>
+              <option value="남">남</option>
+              <option value="여">여</option>
+            </select>
+          </Field>
           <Field label="학년"><input value={nf.grade} onChange={e => setNf({...nf,grade:e.target.value})} placeholder="초3, 중1, 성인" /></Field>
           <Field label="학부모 연락처"><input value={nf.parentPhone} onChange={e => setNf({...nf,parentPhone:e.target.value})} placeholder="010-" /></Field>
           <Field label="상태">

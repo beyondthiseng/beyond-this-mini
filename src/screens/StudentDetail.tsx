@@ -120,8 +120,24 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
-            <Field label="이름">
+            <Field label="이름 (한국어)">
               {renderField(editing, form.name || '', v => upd('name', v))}
+            </Field>
+            <Field label="이름 (영어)">
+              {renderField(editing, form.nameEn || '', v => upd('nameEn', v))}
+            </Field>
+            <Field label="성별">
+              {editing
+                ? <select value={form.gender || ''} onChange={e => upd('gender', e.target.value)}>
+                    <option value="">-</option>
+                    <option value="남">남</option>
+                    <option value="여">여</option>
+                  </select>
+                : <div className={`view-val${!form.gender ? ' empty' : ''}`}>{form.gender || '-'}</div>
+              }
+            </Field>
+            <Field label="생년월일">
+              {renderField(editing, form.birthdate || '', v => upd('birthdate', v), 'date')}
             </Field>
             <Field label="학년">
               {renderField(editing, form.grade || '', v => upd('grade', v))}
@@ -129,17 +145,17 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
             <Field label="학교">
               {renderField(editing, form.school || '', v => upd('school', v))}
             </Field>
-            <Field label="생년월일">
-              {renderField(editing, form.birthdate || '', v => upd('birthdate', v), 'date')}
+            <Field label="학생 연락처">
+              {renderField(editing, form.studentPhone || '', v => upd('studentPhone', v))}
             </Field>
             <Field label="학부모 연락처">
               {renderField(editing, form.parentPhone || '', v => upd('parentPhone', v))}
             </Field>
-            <Field label="학생 연락처">
-              {renderField(editing, form.studentPhone || '', v => upd('studentPhone', v))}
+            <Field label="비상 연락처">
+              {renderField(editing, form.emergencyPhone || '', v => upd('emergencyPhone', v))}
             </Field>
-            <Field label="현재 교재">
-              {renderField(editing, form.currentBook || '', v => upd('currentBook', v))}
+            <Field label="이메일">
+              {renderField(editing, form.email || '', v => upd('email', v), 'email')}
             </Field>
             <Field label="레벨">
               {renderField(editing, form.level || '', v => upd('level', v))}
@@ -147,10 +163,10 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
             <Field label="등록일">
               {renderField(editing, form.enrollDate || '', v => upd('enrollDate', v), 'date')}
             </Field>
-            <Field label="마지막 연락일">
-              {renderField(editing, form.lastContactDate || '', v => upd('lastContactDate', v), 'date')}
-            </Field>
           </div>
+          <Field label="주소">
+            {renderField(editing, form.address || '', v => upd('address', v))}
+          </Field>
 
           <Field label="특이사항">
             {editing
