@@ -150,7 +150,7 @@ export default function LessonLog({ students, lessons, setLessons }: Props) {
               ) : selLessons.map(l => (
                 <Card key={l.id} style={{ marginBottom: 8, padding: '12px 14px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                    <div style={{ display: 'flex', align: 'center', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{ fontSize: 13, fontWeight: 700, color: '#374151', marginRight: 8 }}>{l.date}</span>
                       <span style={{ fontSize: 12, fontWeight: 700, color: ATT_COLOR[l.attendance], background: l.attendance === '출석' ? '#F0FDF4' : l.attendance === '지각' ? '#FFF7ED' : '#FEF2F2', padding: '2px 8px', borderRadius: 4 }}>
                         {l.attendance}
