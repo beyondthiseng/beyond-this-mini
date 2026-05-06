@@ -65,7 +65,6 @@ th{background:#F8FAFC;font-weight:700;text-align:left}
   <div><span>이름 </span><b>${st.name}</b></div>
   <div><span>학년 </span><b>${st.grade}</b></div>
   <div><span>레벨 </span><b>${QLABELS[g.level as keyof typeof QLABELS] ?? g.level}반</b></div>
-  <div><span>교재 </span><b>${st.currentBook || '-'}</b></div>
   <div><span>학교 </span><b>${st.school || '-'}</b></div>
   <div><span>평가 기간 </span><b>${g.quarter}</b></div>
 </div>
@@ -155,7 +154,7 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
 
   const startNew = () => {
     if (!selSid || !selStudent) return;
-    const lv = (selStudent.level as LevelKey) || 'basic';
+    const lv = selStudent.level as string || 'basic';
     const rec = initRecord(selSid, lv);
     setForm(rec); setEditId('new');
   };
@@ -207,7 +206,7 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
                     newAreas.forEach(a => { ns[a] = form.radarScores[a] ?? 0; nb[a] = form.radarBenchmark[a] ?? 3; nc[a] = form.areaComments[a] ?? ''; });
                     setForm(p => p ? { ...p, level: lv, radarScores: ns, radarBenchmark: nb, areaComments: nc } : p);
                   }}>
-                    {([...LEVEL_ORDER, 'adult'] as LevelKey[]).map(lv => <option key={lv} value={lv}>{LEVEL_LABELS[lv]}</option>)}
+                    {([...LEVEL_ORDER, 'adult']).map(lv => <option key={lv} value={lv}>{QLABELS[lv as keyof typeof QLABELS] ?? lv}</option>)}
                   </select>
                 </Field>
               </div>
@@ -310,7 +309,7 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
               }}>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>{s.name}</div>
-                  <div style={{ fontSize: 11, color: '#94A3B8' }}>{s.grade} · {LEVEL_LABELS[(s.level as string) || 'basic']}</div>
+                  <div style={{ fontSize: 11, color: '#94A3B8' }}>{s.grade} · {QLABELS[(s.level as keyof typeof QLABELS)] ?? s.level}</div>
                 </div>
                 <span style={{ fontSize: 10, color: '#94A3B8' }}>{cnt}회</span>
               </div>

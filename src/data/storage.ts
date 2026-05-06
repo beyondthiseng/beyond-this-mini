@@ -18,8 +18,8 @@ function save(key: string, data: unknown): void {
 export function loadStudents(): Student[] { return load(KEYS.s, SAMPLE_STUDENTS); }
 export function saveStudents(d: Student[]): void { save(KEYS.s, d); }
 
-export function loadTests(): AdmissionTestResult[] { return load(KEYS.t, SAMPLE_TESTS); }
-export function saveTests(d: AdmissionTestResult[]): void { save(KEYS.t, d); }
+export function loadTests(): unknown[] { return load(KEYS.t, SAMPLE_TESTS); }
+export function saveTests(d: unknown[]): void { save(KEYS.t, d); }
 
 export function loadLessons(): LessonLog[] { return load(KEYS.l, SAMPLE_LESSONS); }
 export function saveLessons(d: LessonLog[]): void { save(KEYS.l, d); }
@@ -108,7 +108,7 @@ const SAMPLE_STUDENTS: Student[] = [
   },
 ];
 
-const SAMPLE_TESTS: AdmissionTestResult[] = [
+const SAMPLE_TESTS: unknown[] = [
   {
     id:'t1', studentId:'s1', date:'2024-02-28',
     startLevel:'basic', p1Level:'basic', p1Correct:4, p1Total:5,

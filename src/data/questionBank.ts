@@ -1,5 +1,5 @@
 // src/data/questionBank.ts
-import type { LevelKey } from '../types';
+import type { LevelKey } from '../types/questions';
 
 export interface Question {
   q: string;
