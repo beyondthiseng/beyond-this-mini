@@ -12,6 +12,29 @@ interface Props {
   setPage: (p: string) => void;
 }
 
+// 뷰/편집 인라인 렌더 헬퍼 (컴포넌트 아님 — 함수로 호출)
+function renderField(
+  editing: boolean,
+  value: string,
+  onChange: (v: string) => void,
+  type = 'text'
+) {
+  if (editing) {
+    return (
+      <input
+        type={type}
+        value={value}
+        onChange={e => onChange(e.target.value)}
+      />
+    );
+  }
+  return (
+    <div className={`view-val${!value ? ' empty' : ''}`}>
+      {value || '-'}
+    </div>
+  );
+}
+
 export default function StudentDetail({ sid, students, setStudents, setPage }: Props) {
   const st = students.find(s => s.id === sid);
   const [form, setForm] = useState<Student | null>(st ?? null);
@@ -19,11 +42,12 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
   const [tab, setTab] = useState('info');
   const [newMemo, setNewMemo] = useState('');
 
-  useEffect(() => { if (st) setForm({ ...st }); }, [sid]);
+  useEffect(() => { if (st) setForm({ ...st }); setEditing(false); }, [sid]);
 
   if (!st || !form) return <div className="page">학생 없음</div>;
 
-  const upd = (f: keyof Student, v: unknown) => setForm(p => p ? { ...p, [f]: v } : p);
+  const upd = (f: keyof Student, v: unknown) =>
+    setForm(p => p ? { ...p, [f]: v } : p);
 
   const persist = (data: Student) => {
     const next = students.map(s => s.id === sid ? data : s);
@@ -31,6 +55,13 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
   };
 
   const saveForm = () => { persist({ ...form, updatedAt: tod() }); setEditing(false); };
+
+  const deleteStudent = () => {
+    if (!confirm(`"${st.name}" 학생을 삭제할까요?\n이 작업은 되돌릴 수 없습니다.`)) return;
+    const next = students.filter(s => s.id !== sid);
+    setStudents(next); saveStudents(next);
+    setPage('students');
+  };
 
   const chStatus = (v: string) => {
     const nd = { ...form, status: v as Student['status'], updatedAt: tod() };
@@ -42,13 +73,6 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
     const m = { id: gid(), date: tod(), content: newMemo.trim() };
     const nd = { ...form, memos: [m, ...(form.memos ?? [])], updatedAt: tod() };
     setForm(nd); persist(nd); setNewMemo('');
-  };
-
-  const VIEW = ({ f, type }: { f: keyof Student; type?: string }) => {
-    const v = form[f] as string || '';
-    return editing
-      ? <input type={type || 'text'} value={v} onChange={e => upd(f, e.target.value)} />
-      : <div className={`view-val${!v ? ' empty' : ''}`}>{v || '-'}</div>;
   };
 
   const TABS = [
@@ -76,6 +100,7 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
         >
           {STUDENT_STATUS_LIST.map(s => <option key={s}>{s}</option>)}
         </select>
+        <Btn variant="danger" small onClick={deleteStudent}>삭제</Btn>
       </div>
 
       <Tabs tabs={TABS} active={tab} onChange={setTab} />
@@ -93,22 +118,50 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
               <Btn variant="ghost" small onClick={() => setEditing(true)}>수정</Btn>
             )}
           </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
-            <Field label="이름"><VIEW f="name" /></Field>
-            <Field label="학년"><VIEW f="grade" /></Field>
-            <Field label="학교"><VIEW f="school" /></Field>
-            <Field label="생년월일"><VIEW f="birthdate" type="date" /></Field>
-            <Field label="학부모 연락처"><VIEW f="parentPhone" /></Field>
-            <Field label="학생 연락처"><VIEW f="studentPhone" /></Field>
-            <Field label="현재 교재"><VIEW f="currentBook" /></Field>
-            <Field label="레벨"><VIEW f="level" /></Field>
-            <Field label="등록일"><VIEW f="enrollDate" type="date" /></Field>
-            <Field label="마지막 연락일"><VIEW f="lastContactDate" type="date" /></Field>
+            <Field label="이름">
+              {renderField(editing, form.name || '', v => upd('name', v))}
+            </Field>
+            <Field label="학년">
+              {renderField(editing, form.grade || '', v => upd('grade', v))}
+            </Field>
+            <Field label="학교">
+              {renderField(editing, form.school || '', v => upd('school', v))}
+            </Field>
+            <Field label="생년월일">
+              {renderField(editing, form.birthdate || '', v => upd('birthdate', v), 'date')}
+            </Field>
+            <Field label="학부모 연락처">
+              {renderField(editing, form.parentPhone || '', v => upd('parentPhone', v))}
+            </Field>
+            <Field label="학생 연락처">
+              {renderField(editing, form.studentPhone || '', v => upd('studentPhone', v))}
+            </Field>
+            <Field label="현재 교재">
+              {renderField(editing, form.currentBook || '', v => upd('currentBook', v))}
+            </Field>
+            <Field label="레벨">
+              {renderField(editing, form.level || '', v => upd('level', v))}
+            </Field>
+            <Field label="등록일">
+              {renderField(editing, form.enrollDate || '', v => upd('enrollDate', v), 'date')}
+            </Field>
+            <Field label="마지막 연락일">
+              {renderField(editing, form.lastContactDate || '', v => upd('lastContactDate', v), 'date')}
+            </Field>
           </div>
+
           <Field label="특이사항">
             {editing
-              ? <textarea value={form.notes || ''} onChange={e => upd('notes', e.target.value)} rows={3} />
-              : <div className={`view-val${!form.notes ? ' empty' : ''}`} style={{ lineHeight: 1.7 }}>{form.notes || '-'}</div>
+              ? <textarea
+                  value={form.notes || ''}
+                  onChange={e => upd('notes', e.target.value)}
+                  rows={3}
+                />
+              : <div className={`view-val${!form.notes ? ' empty' : ''}`} style={{ lineHeight: 1.7 }}>
+                  {form.notes || '-'}
+                </div>
             }
           </Field>
         </Card>
@@ -129,6 +182,7 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
               <Btn small onClick={addMemo}>저장</Btn>
             </div>
           </Card>
+
           {(form.memos ?? []).length === 0 ? (
             <p style={{ textAlign: 'center', color: '#CBD5E1', fontSize: 12, padding: 16 }}>메모 없음</p>
           ) : (form.memos ?? []).map(m => (
@@ -151,7 +205,7 @@ export default function StudentDetail({ sid, students, setStudents, setPage }: P
               </select>
             </Field>
             <Field label="문의 경로">
-              <select value={form.inquiryRoute} onChange={e => upd('inquiryRoute', e.target.value)}>
+              <select value={form.inquiryRoute || ''} onChange={e => upd('inquiryRoute', e.target.value)}>
                 {['블로그','네이버지도','소개','전단지','전화','기타'].map(r => <option key={r}>{r}</option>)}
               </select>
             </Field>

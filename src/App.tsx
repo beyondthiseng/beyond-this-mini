@@ -9,23 +9,25 @@ import AdmissionTest from './screens/AdmissionTest';
 import LessonLog from './screens/LessonLog';
 import GradeManagement from './screens/GradeManagement';
 import PaymentManagement from './screens/PaymentManagement';
+import Settings from './screens/Settings';
 
 import {
   loadStudents, saveStudents,
-  loadTests, saveTests,
   loadLessons, saveLessons,
   loadGrades, saveGrades,
   loadPayments, savePayments,
+  loadTests, saveTests,
   tod, toYM,
 } from './data/storage';
 
-import type { Student, AdmissionTestResult, LessonLog as LessonLogT, GradeRecord, Payment } from './types';
+import type { Student, LessonLog as LessonLogT, GradeRecord, Payment } from './types';
+import type { AdmissionResult } from './types/questions';
 
 type PageId = 'dashboard' | 'students' | 'detail' | 'marketing' | 'admission' | 'lessons' | 'grades' | 'payments';
 
 export default function App() {
   const [students, setStudentsState] = useState<Student[]>(loadStudents);
-  const [tests,    setTestsState]    = useState<AdmissionTestResult[]>(loadTests);
+  const [tests,    setTestsState]    = useState<AdmissionResult[]>(loadTests);
   const [lessons,  setLessonsState]  = useState<LessonLogT[]>(loadLessons);
   const [grades,   setGradesState]   = useState<GradeRecord[]>(loadGrades);
   const [payments, setPaymentsState] = useState<Payment[]>(loadPayments);
@@ -34,7 +36,7 @@ export default function App() {
   const [selId, setSelId] = useState<string>('');
 
   const setStudents = useCallback((d: Student[]) => { setStudentsState(d); saveStudents(d); }, []);
-  const setTests    = useCallback((d: AdmissionTestResult[]) => { setTestsState(d); saveTests(d); }, []);
+  const setTests    = useCallback((d: AdmissionResult[]) => { setTestsState(d); saveTests(d); }, []);
   const setLessons  = useCallback((d: LessonLogT[]) => { setLessonsState(d); saveLessons(d); }, []);
   const setGrades   = useCallback((d: GradeRecord[]) => { setGradesState(d); saveGrades(d); }, []);
   const setPayments = useCallback((d: Payment[]) => { setPaymentsState(d); savePayments(d); }, []);
@@ -69,6 +71,14 @@ export default function App() {
         return <GradeManagement students={students} grades={grades} setGrades={setGrades} />;
       case 'payments':
         return <PaymentManagement students={students} payments={payments} setPayments={setPayments} />;
+      case 'settings':
+        return <Settings
+          students={students} setStudents={setStudents}
+          tests={tests} setTests={setTests}
+          lessons={lessons} setLessons={setLessons}
+          grades={grades} setGrades={setGrades}
+          payments={payments} setPayments={setPayments}
+        />;
       default:
         return <Dashboard students={students} payments={payments} setPage={goPage} setSelId={setSelId} />;
     }

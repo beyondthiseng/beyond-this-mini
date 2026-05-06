@@ -1,7 +1,7 @@
 // src/components/layout/Sidebar.tsx
 import React from 'react';
 import { exportAll } from '../../data/storage';
-import type { Student, AdmissionTestResult, LessonLog, GradeRecord, Payment } from '../../types';
+import type { Student, LessonLog, GradeRecord, Payment } from '../../types';
 
 type PageId = string;
 
@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { id: 'lessons',    icon: '◑', label: '수업기록' },
   { id: 'grades',     icon: '◉', label: '성적관리' },
   { id: 'payments',   icon: '◰', label: '결제관리' },
+  { id: 'settings',   icon: '⚙', label: '설정' },
 ];
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
   setPage: (p: PageId) => void;
   badges?: Partial<Record<PageId, number>>;
   students: Student[];
-  tests: AdmissionTestResult[];
+  tests: unknown[];
   lessons: LessonLog[];
   grades: GradeRecord[];
   payments: Payment[];
