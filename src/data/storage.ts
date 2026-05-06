@@ -112,17 +112,23 @@ const SAMPLE_STUDENTS: Student[] = [
 const SAMPLE_TESTS: AdmissionResult[] = [
   {
     id:'t1', studentId:'s1', date:'2024-02-28',
-    startLevel:'basic', p1Level:'basic', p1Correct:4, p1Total:5,
-    p2Level:'growth', p2Correct:2, p2Total:5, finalLevel:'basic',
+    startLevel:'basic',
+    phase1Level:'basic', phase1Score:22, phase1Total:30,
+    phase2Level:'lower_intermediate', phase2Score:8, phase2Total:16,
+    finalLevel:'basic',
+    vocabScore:6, grammarScore:5, readingScore:11,
     teacherNote:'Reading 강점, Writing 보완 필요.',
-    parentSummary:'김지호 학생은 기본 문법과 독해에서 안정적인 실력을 보여주었습니다. Basic반 배정을 권장하며, Writing 훈련을 병행하면 빠른 성장이 기대됩니다.',
+    parentSummary:'김지호 학생은 기본 문법과 독해에서 안정적인 실력을 보여주었습니다.\n\n◆ 추천 레벨: Basic\n• Vocabulary: 6/8\n• Grammar: 5/7\n• Reading: 11/15',
   },
   {
-    id:'t2', studentId:'s4', date:'2025-01-04',
-    startLevel:'phonics', p1Level:'phonics', p1Correct:3, p1Total:5,
-    p2Level:null, p2Correct:null, p2Total:null, finalLevel:'phonics',
-    teacherNote:'단모음 인식 가능. 이중모음 및 블렌딩 연습 필요.',
-    parentSummary:'최아린 학생은 알파벳 소리를 인식하는 단계입니다. Smart Phonics 교재로 Phonics반을 시작하면 6개월 내 기본반 진입이 가능할 것으로 예상됩니다.',
+    id:'t2', studentId:'s3', date:'2025-04-29',
+    startLevel:'lower_intermediate',
+    phase1Level:'lower_intermediate', phase1Score:18, phase1Total:30,
+    phase2Level:null, phase2Score:null, phase2Total:null,
+    finalLevel:'lower_intermediate',
+    vocabScore:5, grammarScore:5, readingScore:8,
+    teacherNote:'중등 준비반 시작 권장. Grammar 보완 필요.',
+    parentSummary:'이준서 학생 레벨 테스트 결과를 안내드립니다.\n\n◆ 추천 레벨: Lower Intermediate\n• Vocabulary: 5/8\n• Grammar: 5/7\n• Reading: 8/15',
   },
 ];
 
