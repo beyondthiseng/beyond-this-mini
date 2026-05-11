@@ -135,7 +135,7 @@ function initRecord(studentId: string, level: string): GradeRecord {
   return {
     id: gid(), studentId, quarter: toQ(), date: tod(), level,
     radarScores: scores, radarBenchmark: bench, areaComments: cmts,
-    quarterExam: 0, attendance: 0, attitude: 0, speaking: 0, writing: 0,
+    quarterExam: 0, attendance: 0, attitude: 0, speaking: 0,
     summary: '', nextGoals: '',
   };
 }
