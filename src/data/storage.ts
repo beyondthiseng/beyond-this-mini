@@ -145,7 +145,7 @@ const SAMPLE_GRADES: GradeRecord[] = [
     radarScores:{ 'Vocabulary':3, 'Sentence Structure':3, 'Reading Accuracy':4, 'Listening':4, 'Speaking':3, 'Writing':2 },
     radarBenchmark:{ 'Vocabulary':3, 'Sentence Structure':3, 'Reading Accuracy':3, 'Listening':3, 'Speaking':3, 'Writing':3 },
     areaComments:{ 'Writing':'철자 오류 다수, 꾸준한 연습 필요', 'Reading Accuracy':'기준 이상 달성!' },
-    quarterExam:48, attendance:9, attitude:8, speaking:7, writing:6,
+    quarterExam:68, attendance:4, attitude:4, speaking:8,
     summary:'꾸준히 출석하며 Reading과 Listening에서 눈에 띄는 성장을 보였습니다. Writing 영역은 매주 1편 글쓰기 연습을 통해 빠르게 향상될 것으로 기대합니다.',
     nextGoals:'Writing 매주 1편 작성 습관화, 단어장 누적 50개 달성',
   },

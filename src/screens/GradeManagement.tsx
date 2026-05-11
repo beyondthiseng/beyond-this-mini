@@ -14,7 +14,7 @@ interface Props {
 }
 
 function calcTotal(g: GradeRecord): number {
-  return (g.quarterExam ?? 0) + (g.attendance ?? 0) + (g.attitude ?? 0) + (g.speaking ?? 0) + (g.writing ?? 0);
+  return (g.quarterExam ?? 0) + (g.attendance ?? 0) + (g.attitude ?? 0) + (g.speaking ?? 0);
 }
 function getGrade(total: number): string {
   if (total >= 95) return 'A+';
@@ -98,13 +98,12 @@ th{background:#F8FAFC;font-weight:700;text-align:left}
 
 <div class="sec">종합 점수 (100점 만점)</div>
 <table>
-  <tr><th>분기 시험 /60</th><th>출결 /10</th><th>수업 태도 /10</th><th>Speaking /10</th><th>Writing /10</th><th>합계</th></tr>
+  <tr><th>분기 시험 /80</th><th>출결 /5</th><th>수업 태도 /5</th><th>Speaking /10</th><th>합계</th></tr>
   <tr>
     <td>${g.quarterExam ?? 0}</td>
     <td>${g.attendance ?? 0}</td>
     <td>${g.attitude ?? 0}</td>
     <td>${g.speaking ?? 0}</td>
-    <td>${g.writing ?? 0}</td>
     <td style="font-size:15px;font-weight:800;color:${totalColor}">${total}점 (${grade})</td>
   </tr>
 </table>
@@ -249,20 +248,17 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
             <Card style={{ marginBottom: 10 }}>
               <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 10 }}>종합 점수 (100점 만점)</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
-                <Field label="분기 시험 /60">
-                  <input type="number" min={0} max={60} value={form.quarterExam ?? ''} onChange={e => updForm('quarterExam', parseInt(e.target.value) || 0)} />
+                <Field label="분기 시험 /80">
+                  <input type="number" min={0} max={80} value={form.quarterExam ?? ''} onChange={e => updForm('quarterExam', parseInt(e.target.value) || 0)} />
                 </Field>
-                <Field label="출결 /10">
-                  <input type="number" min={0} max={10} value={form.attendance ?? ''} onChange={e => updForm('attendance', parseInt(e.target.value) || 0)} />
+                <Field label="출결 /5">
+                  <input type="number" min={0} max={5} value={form.attendance ?? ''} onChange={e => updForm('attendance', parseInt(e.target.value) || 0)} />
                 </Field>
-                <Field label="수업 태도 /10">
-                  <input type="number" min={0} max={10} value={form.attitude ?? ''} onChange={e => updForm('attitude', parseInt(e.target.value) || 0)} />
+                <Field label="수업 태도 /5">
+                  <input type="number" min={0} max={5} value={form.attitude ?? ''} onChange={e => updForm('attitude', parseInt(e.target.value) || 0)} />
                 </Field>
                 <Field label="Speaking /10">
                   <input type="number" min={0} max={10} value={form.speaking ?? ''} onChange={e => updForm('speaking', parseInt(e.target.value) || 0)} />
-                </Field>
-                <Field label="Writing /10">
-                  <input type="number" min={0} max={10} value={form.writing ?? ''} onChange={e => updForm('writing', parseInt(e.target.value) || 0)} />
                 </Field>
                 <div style={{ display: 'flex', alignItems: 'center', padding: '8px 0' }}>
                   <span style={{ fontSize: 20, fontWeight: 800, color: total >= 80 ? '#15803D' : total >= 60 ? '#B45309' : '#B91C1C' }}>
@@ -371,7 +367,7 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
                           })}
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 4, fontSize: 11, marginBottom: 8 }}>
-                          {[['시험', g.quarterExam,60],['출결',g.attendance,10],['태도',g.attitude,10],['Speaking',g.speaking,10],['Writing',g.writing,10]].map(([lbl,val,max]) => (
+                          {[['시험', g.quarterExam,80],['출결',g.attendance,5],['태도',g.attitude,5],['Speaking',g.speaking,10]].map(([lbl,val,max]) => (
                             <div key={String(lbl)} style={{ background: '#F8FAFC', borderRadius: 6, padding: '5px 8px', textAlign: 'center' }}>
                               <div style={{ color: '#94A3B8', fontSize: 10 }}>{lbl}</div>
                               <div style={{ fontWeight: 700 }}>{val}/{max}</div>

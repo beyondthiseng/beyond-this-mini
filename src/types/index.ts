@@ -65,11 +65,10 @@ export interface GradeRecord {
   radarScores: Record<string, number>;
   radarBenchmark: Record<string, number>;
   areaComments: Record<string, string>;
-  quarterExam: number;
-  attendance: number;
-  attitude: number;
-  speaking: number;
-  writing: number;
+  quarterExam: number;   // /80
+  attendance: number;    // /5
+  attitude: number;      // /5
+  speaking: number;      // /10
   summary: string;
   nextGoals: string;
 }
