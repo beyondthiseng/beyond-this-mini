@@ -311,14 +311,14 @@ function AreaRow({ label, labelEn, value, onChange }: {
         <div style={{ fontSize: 10, color: '#94A3B8' }}>{label}</div>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-        <input type="number" min={0} value={value.score || ''}
-          onChange={e => onChange({ ...value, score: parseInt(e.target.value) || 0 })}
+        <input type="number" min={0} step={0.1} value={value.score || ''}
+          onChange={e => onChange({ ...value, score: parseFloat(e.target.value) || 0 })}
           placeholder="점수"
           style={{ width: 70, padding: '5px 8px', border: '1px solid #E2E8F0', borderRadius: 6, fontSize: 13, outline: 'none', textAlign: 'right' }}
         />
         <span style={{ color: '#94A3B8', fontSize: 13 }}>/</span>
-        <input type="number" min={0} value={value.maxScore || ''}
-          onChange={e => onChange({ ...value, maxScore: parseInt(e.target.value) || 0 })}
+        <input type="number" min={0} step={0.1} value={value.maxScore || ''}
+          onChange={e => onChange({ ...value, maxScore: parseFloat(e.target.value) || 0 })}
           placeholder="만점"
           style={{ width: 70, padding: '5px 8px', border: '1px solid #E2E8F0', borderRadius: 6, fontSize: 13, outline: 'none', textAlign: 'right' }}
         />
@@ -403,13 +403,13 @@ export default function GradeManagement({ students, grades, setGrades }: Props) 
               <div style={{ fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 10 }}>기타 점수</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0 12px' }}>
                 <Field label="Speaking /10">
-                  <input type="number" min={0} max={10} value={form.speaking || ''} onChange={e => upd('speaking', parseInt(e.target.value)||0)} />
+                  <input type="number" min={0} max={10} step={0.1} value={form.speaking || ''} onChange={e => upd('speaking', parseFloat(e.target.value)||0)} />
                 </Field>
                 <Field label="Attendance /5">
-                  <input type="number" min={0} max={5} value={form.attendance || ''} onChange={e => upd('attendance', parseInt(e.target.value)||0)} />
+                  <input type="number" min={0} max={5} step={0.1} value={form.attendance || ''} onChange={e => upd('attendance', parseFloat(e.target.value)||0)} />
                 </Field>
                 <Field label="Attitude /5">
-                  <input type="number" min={0} max={5} value={form.attitude || ''} onChange={e => upd('attitude', parseInt(e.target.value)||0)} />
+                  <input type="number" min={0} max={5} step={0.1} value={form.attitude || ''} onChange={e => upd('attitude', parseFloat(e.target.value)||0)} />
                 </Field>
               </div>
             </Card>
