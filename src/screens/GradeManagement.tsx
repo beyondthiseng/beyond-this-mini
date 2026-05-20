@@ -179,6 +179,48 @@ th{background:#F8FAFC;font-weight:700}
 </body></html>`;
 }
 
+// html2canvas로 이미지 저장하는 창 열기
+function openSaveImage(st: Student, g: GradeRecord) {
+  const baseHtml = buildReportHTML(st, g);
+  // 자동 print 제거, html2canvas 추가
+  const html = baseHtml.replace('<script>window.onload=()=>window.print();<\/script>', '') + `
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<div id="save-toolbar" style="position:fixed;top:0;left:0;right:0;background:#1B2B3A;padding:10px 18px;display:flex;gap:10px;align-items:center;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3)">
+  <span style="color:#fff;font-size:13px;font-weight:600">${st.name} — ${g.quarter} 성적표</span>
+  <button id="btn-png" style="padding:7px 16px;background:#4A9E8E;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">🖼 PNG 저장</button>
+  <button id="btn-pdf" style="padding:7px 16px;background:#6C5CE7;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer">📄 PDF 저장</button>
+  <button onclick="window.close()" style="padding:7px 14px;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:6px;font-size:13px;cursor:pointer">닫기</button>
+</div>
+<div style="height:52px"></div>
+<script>
+document.getElementById('btn-png').addEventListener('click', function() {
+  var toolbar = document.getElementById('save-toolbar');
+  var spacer = toolbar.nextElementSibling;
+  toolbar.style.display = 'none';
+  spacer.style.display = 'none';
+  html2canvas(document.body, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(function(canvas) {
+    var link = document.createElement('a');
+    link.download = '${st.name}_${g.quarter}_성적표.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    toolbar.style.display = 'flex';
+    spacer.style.display = 'block';
+  });
+});
+document.getElementById('btn-pdf').addEventListener('click', function() {
+  var toolbar = document.getElementById('save-toolbar');
+  var spacer = toolbar.nextElementSibling;
+  toolbar.style.display = 'none';
+  spacer.style.display = 'none';
+  setTimeout(function() { window.print(); toolbar.style.display = 'flex'; spacer.style.display = 'block'; }, 100);
+});
+</script>`;
+
+  const w = window.open('', '_blank');
+  if (w) { w.document.write(html); w.document.close(); }
+  else alert('팝업을 허용해 주세요.');
+}
+
 function openPrint(st: Student, g: GradeRecord) {
   const html = buildReportHTML(st, g);
   const w = window.open('', '_blank');
@@ -189,8 +231,14 @@ function openPrint(st: Student, g: GradeRecord) {
 // ── 미리보기 모달 ─────────────────────────────────────────────────
 function PreviewModal({ st, g, onClose }: { st: Student; g: GradeRecord; onClose: () => void }) {
   const html = buildReportHTML(st, g);
-  // 출력용 html에서 window.print() 자동실행 제거
   const previewHtml = html.replace('<script>window.onload=()=>window.print();<\/script>', '');
+
+  const toolbarBtn = (onClick: () => void, bg: string, children: string) => (
+    <button onClick={onClick} style={{
+      padding: '7px 14px', background: bg, color: '#fff',
+      border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 700, cursor: 'pointer',
+    }}>{children}</button>
+  );
 
   return (
     <div style={{
@@ -201,42 +249,27 @@ function PreviewModal({ st, g, onClose }: { st: Student; g: GradeRecord; onClose
     }}>
       {/* 툴바 */}
       <div style={{
-        display: 'flex', gap: 10, alignItems: 'center', marginBottom: 16,
+        display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16,
         background: '#1B2B3A', padding: '10px 18px', borderRadius: 8,
         boxShadow: '0 4px 20px rgba(0,0,0,0.3)', flexShrink: 0,
-        position: 'sticky', top: 0, zIndex: 10,
+        position: 'sticky', top: 0, zIndex: 10, flexWrap: 'wrap',
       }}>
-        <span style={{ color: '#fff', fontSize: 13, fontWeight: 600, marginRight: 8 }}>
-          {st.name} — {g.quarter} 성적표 미리보기
+        <span style={{ color: '#fff', fontSize: 13, fontWeight: 600, marginRight: 4 }}>
+          {st.name} — {g.quarter}
         </span>
-        <button
-          onClick={() => openPrint(st, g)}
-          style={{
-            padding: '7px 16px', background: '#4A9E8E', color: '#fff',
-            border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 700,
-            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
-          }}
-        >
-          🖨 인쇄
-        </button>
-        <button
-          onClick={onClose}
-          style={{
-            padding: '7px 14px', background: 'rgba(255,255,255,0.1)', color: '#fff',
-            border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6,
-            fontSize: 13, cursor: 'pointer',
-          }}
-        >
-          닫기
-        </button>
+        {toolbarBtn(() => openPrint(st, g), '#4A9E8E', '🖨 인쇄')}
+        {toolbarBtn(() => openSaveImage(st, g), '#6C5CE7', '💾 이미지/PDF 저장')}
+        <button onClick={onClose} style={{
+          padding: '7px 14px', background: 'rgba(255,255,255,0.1)', color: '#fff',
+          border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6,
+          fontSize: 13, cursor: 'pointer',
+        }}>닫기</button>
       </div>
 
-      {/* A4 미리보기 — 스케일 0.78, 실제 높이만큼 공간 확보 */}
+      {/* A4 미리보기 */}
       <div style={{
-        width: 794 * 0.78,
-        height: 1123 * 0.78,
-        flexShrink: 0,
-        boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
+        width: 794 * 0.78, height: 1123 * 0.78,
+        flexShrink: 0, boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
         borderRadius: 2, overflow: 'hidden', background: '#fff',
       }}>
         <iframe
