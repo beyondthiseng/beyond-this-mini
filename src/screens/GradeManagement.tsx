@@ -148,7 +148,7 @@ th{background:#F8FAFC;font-weight:700}
   ${radarSVGStr(g, 240)}
   <div style="flex:1">
     <div class="score-big">${total}<span style="font-size:14px;font-weight:400;color:#94A3B8"> / ${max}</span></div>
-    <div style="text-align:center;font-size:13px;color:#64748B;margin:4px 0 14px">등급 <b style="color:${tc}">${grade}</b></div>
+    <br/>
     <table>
       <tr><th>영역</th><th>점수</th><th>만점</th><th>비율</th></tr>
       ${TEST_AREAS.map(a=>{
@@ -204,13 +204,15 @@ function PreviewModal({ st, g, onClose }: { st: Student; g: GradeRecord; onClose
     <div style={{
       position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.65)',
       display: 'flex', flexDirection: 'column', alignItems: 'center',
-      justifyContent: 'flex-start', zIndex: 200, paddingTop: 20,
+      justifyContent: 'flex-start', zIndex: 200,
+      overflowY: 'auto', padding: '20px 0 40px',
     }}>
       {/* 툴바 */}
       <div style={{
-        display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12,
+        display: 'flex', gap: 10, alignItems: 'center', marginBottom: 16,
         background: '#1B2B3A', padding: '10px 18px', borderRadius: 8,
-        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.3)', flexShrink: 0,
+        position: 'sticky', top: 0, zIndex: 10,
       }}>
         <span style={{ color: '#fff', fontSize: 13, fontWeight: 600, marginRight: 8 }}>
           {st.name} — {g.quarter} 성적표 미리보기
@@ -237,17 +239,17 @@ function PreviewModal({ st, g, onClose }: { st: Student; g: GradeRecord; onClose
         </button>
       </div>
 
-      {/* A4 미리보기 */}
+      {/* A4 미리보기 — 스케일 0.78, 실제 높이만큼 공간 확보 */}
       <div style={{
-        width: 794, height: 1123, background: '#fff',
+        width: 794 * 0.78,
+        height: 1123 * 0.78,
+        flexShrink: 0,
         boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
-        borderRadius: 2, overflow: 'hidden', flexShrink: 0,
-        transform: 'scale(0.75)', transformOrigin: 'top center',
-        marginBottom: -280,
+        borderRadius: 2, overflow: 'hidden', background: '#fff',
       }}>
         <iframe
           srcDoc={previewHtml}
-          style={{ width: '100%', height: '100%', border: 'none' }}
+          style={{ width: 794, height: 1123, border: 'none', transform: 'scale(0.78)', transformOrigin: 'top left' }}
           title="성적표 미리보기"
         />
       </div>
