@@ -1,39 +1,4 @@
 // src/data/levelTemplates.ts
-// 이 파일은 성적관리의 Radar Chart 레벨 템플릿용입니다.
-// 입학테스트 레벨(questions.ts)과는 별개입니다.
-
-export const LEVEL_TEMPLATES: Record<string, string[]> = {
-  phonics: [
-    'Letter Sounds', 'Blending', 'Decoding',
-    'Basic Vocabulary', 'Listening', 'Simple Speaking',
-  ],
-  basic: [
-    'Vocabulary', 'Sentence Structure', 'Reading Accuracy',
-    'Listening', 'Speaking', 'Writing',
-  ],
-  lower_intermediate: [
-    'Reading Comprehension', 'Vocabulary Usage', 'Sentence Expansion',
-    'Speaking', 'Writing', 'Thinking',
-  ],
-  growth: [
-    'Reading Comprehension', 'Vocabulary Usage', 'Sentence Expansion',
-    'Speaking', 'Writing', 'Thinking',
-  ],
-  intermediate: [
-    'Critical Reading', 'Inference', 'Vocabulary Depth',
-    'Speaking', 'Writing', 'Reasoning',
-  ],
-  advanced: [
-    'Critical Reading', 'Inference', 'Vocabulary Depth',
-    'Speaking', 'Writing', 'Reasoning',
-  ],
-  adult: [
-    'Reading Comprehension', 'Vocabulary', 'Grammar',
-    'Speaking', 'Writing', 'Communication',
-  ],
-};
-
-export const LEVEL_ORDER = ['phonics','basic','lower_intermediate','growth','intermediate','advanced','adult'];
 
 export const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
   '문의':       { bg: '#EEF2FF', color: '#4338CA' },
@@ -55,6 +20,15 @@ export const CLASS_INTEREST_LIST = [
 
 export const INQUIRY_ROUTE_LIST = [
   '블로그','네이버지도','소개','전단지','전화','기타'
+] as const;
+
+// 성적표 레벨 목록 (Growth 제거, Lower Intermediate로 통일)
+export const GRADE_LEVEL_LIST = [
+  { value: 'basic',              label: 'Basic' },
+  { value: 'lower_intermediate', label: 'Lower Intermediate' },
+  { value: 'intermediate',       label: 'Intermediate' },
+  { value: 'advanced',           label: 'Advanced' },
+  { value: 'adult',              label: '성인' },
 ] as const;
 
 export const SMS_TEMPLATES = [
