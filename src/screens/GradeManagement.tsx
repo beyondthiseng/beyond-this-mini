@@ -45,6 +45,7 @@ function RadarChart({ g, size = 220 }: { g: GradeRecord; size?: number }) {
   const cx = size / 2, cy = size / 2;
   const R = size * 0.33, labelR = size * 0.45;
   const n = 4;
+  const pad = 45; // 좌우 레이블 여백
   const angle = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
   const px = (i: number, v: number) => cx + R * v * Math.cos(angle(i));
   const py = (i: number, v: number) => cy + R * v * Math.sin(angle(i));
@@ -56,7 +57,7 @@ function RadarChart({ g, size = 220 }: { g: GradeRecord; size?: number }) {
   const fullPts  = Array.from({length:n}, (_,i) => `${px(i,1).toFixed(1)},${py(i,1).toFixed(1)}`).join(' ');
   const ta = (i: number) => { const ax = Math.cos(angle(i)); return ax<-0.1?'end':ax>0.1?'start':'middle'; };
   return (
-    <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} style={{display:'block'}}>
+    <svg viewBox={`${-pad} 0 ${size+pad*2} ${size}`} width={size} height={size} style={{display:'block'}}>
       {[0.25,0.5,0.75,1].map(r=>(
         <polygon key={r}
           points={Array.from({length:n},(_,i)=>`${px(i,r).toFixed(1)},${py(i,r).toFixed(1)}`).join(' ')}
@@ -87,7 +88,7 @@ function RadarChart({ g, size = 220 }: { g: GradeRecord; size?: number }) {
 
 // ── SVG 문자열 (출력용) ───────────────────────────────────────────
 function radarSVGStr(g: GradeRecord, size=240): string {
-  const cx=size/2, cy=size/2, R=size*0.33, labelR=size*0.45, n=4;
+  const cx=size/2, cy=size/2, R=size*0.33, labelR=size*0.45, n=4, pad=50;
   const angle=(i:number)=>-Math.PI/2+(i*2*Math.PI)/n;
   const px=(i:number,v:number)=>+(cx+R*v*Math.cos(angle(i))).toFixed(2);
   const py=(i:number,v:number)=>+(cy+R*v*Math.sin(angle(i))).toFixed(2);
@@ -102,7 +103,7 @@ function radarSVGStr(g: GradeRecord, size=240): string {
     const ax=Math.cos(angle(i));const ta=ax<-0.1?'end':ax>0.1?'start':'middle';
     return `<text x="${+(cx+labelR*Math.cos(angle(i))).toFixed(1)}" y="${+(cy+labelR*Math.sin(angle(i))).toFixed(1)}" text-anchor="${ta}" dominant-baseline="middle" font-size="9.5" font-family="Apple SD Gothic Neo,Malgun Gothic,sans-serif" fill="#374151" font-weight="600">${a.labelEn}</text>`;
   }).join('');
-  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">${rings}${axes}<polygon points="${fullPts}" fill="rgba(74,158,142,0.05)" stroke="none"/><polygon points="${scorePts}" fill="rgba(74,158,142,0.25)" stroke="#4A9E8E" stroke-width="2"/>${dots}${lbls}</svg>`;
+  return `<svg viewBox="${-pad} 0 ${size+pad*2} ${size}" width="${size+pad*2}" height="${size}" xmlns="http://www.w3.org/2000/svg">${rings}${axes}<polygon points="${fullPts}" fill="rgba(74,158,142,0.05)" stroke="none"/><polygon points="${scorePts}" fill="rgba(74,158,142,0.25)" stroke="#4A9E8E" stroke-width="2"/>${dots}${lbls}</svg>`;
 }
 
 // ── 성적표 HTML 생성 ──────────────────────────────────────────────
